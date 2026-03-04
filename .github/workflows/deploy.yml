@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -52,6 +52,10 @@ jobs:
           mkdir -p _site
           cp -r dist/* _site/ 2>/dev/null || true
           cp -r ui/dist/* _site/ 2>/dev/null || true
+          # Create index.html if not exists
+          if [ ! -f _site/index.html ]; then
+            echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>OpenClaw</title></head><body><h1>🦞 OpenClaw</h1><p>Deployed by superhlz</p></body></html>' > _site/index.html
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
